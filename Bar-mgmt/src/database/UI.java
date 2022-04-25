@@ -94,9 +94,39 @@ public class UI {
 		
 	}
 	
+	
 	private static void addItem(Scanner s) {
-
-		System.out.println("Not implemented");
+		System.out.println("Is the item a drink?");
+		String itemType = s.nextLine();
+		
+		if (itemType.equals("No") || itemType.equals("no")) {
+			System.out.println("Enter item name: ");
+			String foodName = s.nextLine();
+			System.out.println("Enter item category: \n"
+					+ "Categories include: appetizer, lunch, dinner, "
+					+ "or dessert \n");
+			String foodCategory = s.nextLine();
+			System.out.println("Enter low amount: ");
+			int lowAmt = s.nextInt();
+			System.out.println("Enter order amount: ");
+			int orderAmt = s.nextInt();
+			Database.createFood(foodName, foodCategory, lowAmt, orderAmt);
+		} else if (itemType.equals("Yes") || itemType.equals("yes")) {
+			System.out.println("Enter item name: ");
+			String drinkName = s.nextLine();
+			System.out.println("Enter item category: \n"
+					+ "Categories include: Water, SoftDrink, Alcoholic, "
+					+ "or Other \n");
+			String drinkCategory = s.nextLine();
+			System.out.println("Enter low amount: ");
+			int lowAmt = s.nextInt();
+			System.out.println("Enter order amount: ");
+			int orderAmt = s.nextInt();
+			Database.createDrink(drinkName, drinkCategory, lowAmt, orderAmt);
+		} else {
+			System.out.println("Invalid input. Please enter 'yes' if the "
+					+ "item is a drink or 'no' if the item is food.");
+		}
 		
 	}
 	
