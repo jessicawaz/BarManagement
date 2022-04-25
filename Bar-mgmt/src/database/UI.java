@@ -100,9 +100,9 @@ public class UI {
 		String itemType = s.nextLine();
 		
 		if (itemType.equals("No") || itemType.equals("no")) {
-			System.out.println("Enter item name: ");
+			System.out.println("Enter food name: ");
 			String foodName = s.nextLine();
-			System.out.println("Enter item category: \n"
+			System.out.println("Enter food category: \n"
 					+ "Categories include: appetizer, lunch, dinner, "
 					+ "or dessert \n");
 			String foodCategory = s.nextLine();
@@ -112,9 +112,9 @@ public class UI {
 			int orderAmt = s.nextInt();
 			Database.createFood(foodName, foodCategory, lowAmt, orderAmt);
 		} else if (itemType.equals("Yes") || itemType.equals("yes")) {
-			System.out.println("Enter item name: ");
+			System.out.println("Enter drink name: ");
 			String drinkName = s.nextLine();
-			System.out.println("Enter item category: \n"
+			System.out.println("Enter drink category: \n"
 					+ "Categories include: Water, SoftDrink, Alcoholic, "
 					+ "or Other \n");
 			String drinkCategory = s.nextLine();
