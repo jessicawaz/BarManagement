@@ -42,5 +42,14 @@ public class InventoryOrder {
 		return orderDate;
 	}
 	
+	public String toString() {
+		return String.format("Item: %s, User: %s, Price: %s, Quantity: %d, Date: %tF", 
+				this.getItem(), 
+				this.getUserFullName(), 
+				this.getPricePerUnit(),
+				this.getOrderQuantity(),
+				this.getOrderDate());
+	}
+	
 	
 }

@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import database.data.Database;
 import database.data.InventoryItem;
+import database.data.InventoryOrder;
 
 public class UI {
 
@@ -78,15 +79,18 @@ public class UI {
 		return authenticated;
 	}
 	
+	// Implemented
 	private static void reviewInventory(Scanner s) {
 		for(InventoryItem item: Database.getInventoryItems()) {
 			System.out.println(item);
 		}
 	}
 	
+	// Implemented
 	private static void reviewOrders(Scanner s) {
-
-		System.out.println("Not implemented");
+		for(InventoryOrder order: Database.getOrders()) {
+			System.out.println(order);
+		}
 		
 	}
 	
