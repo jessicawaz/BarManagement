@@ -130,9 +130,13 @@ public class UI {
 		
 	}
 	
+	//Implemented, not tested. - Kylie F
 	private static void modifyItem(Scanner s) {
-		System.out.println("Not implemented");
-		
+	String sql = "UPDATE InventoryItem " + "SET foodCategories =  ";
+         stmt.executeUpdate(sql);
+         ResultSet rs = stmt.executeQuery(QUERY);
+         while(rs.next()){
+            System.out.print("Menu: " + rs.getString("foodCategories"));		
 	}
 	
 	private static void reduceItem(Scanner s) {
