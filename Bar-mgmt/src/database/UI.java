@@ -3,7 +3,11 @@ package database;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import database.data.Database;
@@ -62,6 +66,9 @@ public class UI {
 					System.out.println("Please enter another command or enter \"logout\" to exit.");
 				}
 			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		finally {
 			System.out.println("Disconnecting from database...");
@@ -164,7 +171,8 @@ public class UI {
 	
 	//Implemented, not tested. - Kylie F
 	private static void modifyItem(Scanner s) {
-	System.out.println("Enter item category name that needs inventory updated: \n"+ "Categories include: appetizer, lunch, dinner, dessert"+ "or Water, SoftDrink, Alcoholic, Other \n");
+	System.out.println("Enter item category name that needs inventory updated: \n"+ 
+	"Categories include: appetizer, lunch, dinner, dessert"+ " or Water, SoftDrink, Alcoholic, Other \n");
 	String name = s.nextLine();	
 	InventoryItem i = Database.getInventoryItemFromName(name);
 		
@@ -194,11 +202,41 @@ public class UI {
 	}
 
 	private static void createOrder(Scanner s) {
-		System.out.println("Not implemented");
+		System.out.println("Enter item name: \n"
+				+ "Items that can be ordered: " + Database.getInventoryItems());
+		String itemName = s.nextLine();
+		InventoryItem item = Database.getInventoryItemFromName(itemName);
 		
+		
+		System.out.println("Enter order price per unit: ");
+		double price = s.nextDouble();
+		
+		System.out.println("Enter amount to order: ");
+		int orderAmnt = s.nextInt();
+		
+		Date date = new Date();
+		Database.createOrder(item, price, orderAmnt, date);
+		System.out.println(item + " ordered successfully.");
 	}
-	private static void completeOrder(Scanner s) {
-		System.out.println("Not implemented");
-		
+	private static void completeOrder(Scanner s) throws ParseException {
+		List<InventoryOrder> incomplete = Database.getIncompleteOrders();
+		System.out.println("Current incomplete orders: \n" 
+				+ incomplete);
+		System.out.println("Which order has been received?\n"
+				+ "Enter the index of the order (1, 2, etc): ");
+		int index = s.nextInt();
+		if (index < 1 || index > incomplete.size()) {
+			System.out.printf("Invalid ID. Must be between %d and %d!\n", 1, incomplete.size());
+		}
+		System.out.println("Order received date: \n"
+				+ "Format: month-day-year");
+		String recDate = s.nextLine();
+			Date newDate = new SimpleDateFormat("mm-dd-yyyy").parse(recDate);
+			
+			InventoryOrder order = incomplete.get(index-1);
+			if (Database.completeOrder(order, newDate)) {
+				System.out.println(order + " \nhas been added successfully!");
+			
+		}
 	}
 }
