@@ -1,13 +1,9 @@
 package database;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 import database.data.Database;
@@ -68,6 +64,7 @@ public class UI {
 					}
 					System.out.println("Please enter another command or enter \"logout\" to exit.");
 				}
+				s.close();
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -248,7 +245,7 @@ public class UI {
 		
 		Date date = new Date();
 		Database.createOrder(item, price, orderAmnt, date);
-		System.out.println(item.getName() + " ordered successfully.");
+		System.out.println(item.getName() + " order created successfully.");
 		s.nextLine();
 	}
 	private static void completeOrder(Scanner s) throws ParseException {
