@@ -169,22 +169,64 @@ public class UI {
 		
 	}
 	
-	//Implemented, not tested. - Kylie F
-	private static void modifyItem(Scanner s) {
-	System.out.println("Enter item category name that needs inventory updated: \n"+ 
-	"Categories include: appetizer, lunch, dinner, dessert"+ " or Water, SoftDrink, Alcoholic, Other \n");
-	String name = s.nextLine();	
-	InventoryItem i = Database.getInventoryItemFromName(name);
+	
+private static void modifyItem(Scanner s) {
+System.out.println("Enter item category name that needs update: \n"+ "Categories include: appetizer, lunch, dinner, dessert"+ " or Water, SoftDrink, Alcoholic, Other \n");
+String names = "[";
 		
-	System.out.println("Please enter the new number quantity you want associated with this item.");
-	int newAmount = s.nextInt();
-	i.setItemOrderAmt(newAmount);
+for(InventoryItem item : Database.getInventoryItems()) {
+    	names += item.getName() + ", ";
+}
+	names = names.substring(0, names.length()-2) +"]";
 
-	Database.saveInventoryItem(i);	
+	System.out.println("Enter item name: \n" + "Items that can be ordered: " + names);
+	String itemName = s.nextLine();
+			   
+	InventoryItem item = Database.getInventoryItemFromName(itemName);
+
+if (item.isFood()) {
 		
-	System.out.println("You have updated: " + name + "New inventory amount will be: " + newAmount);
-			
+  	System.out.println("What is the food's new name? (leave blank to keep previous)")
+ 	String newName = s.next();
+		
+if(!newName.isBlank()){
+    	item.setName(newName);
+		
+	System.out.println("Enter low amount: ");
+		int lowAmt = s.nextInt();
+		
+	System.out.println("Enter order amount: ");
+		int orderAmt = s.nextInt();
+		s.nextLine();
+		
+	System.out.println(Database.createFood(newName, lowAmt, orderAmt));
+  }
+}
+else{
+  if (item.isDrink()) {
+		
+  	System.out.println("What is the drinks's new name? (leave blank to keep previous)")
+ 	String newName = s.next();
+		
+  if(!newName.isBlank()){
+    	item.setName(newName);
+		
+	System.out.println("Enter low amount: ");
+		int lowAmt = s.nextInt();
+		
+	System.out.println("Enter order amount: ");
+		int orderAmt = s.nextInt();
+		s.nextLine();
+		
+	System.out.println(Database.createDrink(newName, lowAmt, orderAmt));
+}
+	Database.saveInventoryItem(i);
+	  
+	System.out.println("Update successful," + newName + "added");	
 	}
+	
+	
+	
 	//Implemented, I used the same logic as the modify item since it seemed to make the most sense? But correct me if I'm wrong. Or if we want to trim out reduce item all together and just keep modify. - Kylie F
 	private static void reduceItem(Scanner s) {
 	System.out.println("Enter item category name that needs inventory reduced: \n"+ "Categories include: appetizer, lunch, dinner, dessert"+ "or Water, SoftDrink, Alcoholic, Other \n");
