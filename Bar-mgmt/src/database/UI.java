@@ -1,5 +1,9 @@
 package database;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 import database.data.Database;
@@ -8,6 +12,8 @@ import database.data.InventoryOrder;
 
 public class UI {
 
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy");
+	
 	public static void main(String[] args) {
 		System.out.println("Connecting to database...");
 		if(!Database.connect()) {
@@ -46,6 +52,9 @@ public class UI {
 							break;
 						case "logout":
 							break main;
+						case "testdb":
+							testDatabase();
+							break;
 						default:
 							System.out.println("Invalid command: "+ command);
 							break;
@@ -58,6 +67,27 @@ public class UI {
 			System.out.println("Disconnecting from database...");
 			Database.disconnect();
 			System.out.println("Goodbye");
+		}
+	}
+
+	private static void testDatabase() {
+		InventoryItem item = Database.getInventoryItemFromName("Hamburger");
+		System.out.println(item);
+		item.useStock(10);
+		item.setFoodCategory("lunch");
+		System.out.println(item);
+		Database.saveInventoryItem(item);
+		item = Database.getInventoryItemFromName("Hamburger");
+		System.out.println(item);
+		try {
+			InventoryOrder order = Database.createOrder(item, 10.43, 10, DATE_FORMAT.parse("04-12-2020"));
+			System.out.println(order);
+			Database.completeOrder(order, DATE_FORMAT.parse("04-12-2021"));
+			System.out.println(order);
+			System.out.println(item);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -96,7 +126,7 @@ public class UI {
 	
 	
 	private static void addItem(Scanner s) {
-		System.out.println("Is the item a drink?");
+		System.out.println("Is the item a drink? (yes/no)");
 		String itemType = s.nextLine();
 		
 		if (itemType.equals("No") || itemType.equals("no")) {
@@ -104,25 +134,27 @@ public class UI {
 			String foodName = s.nextLine();
 			System.out.println("Enter food category: \n"
 					+ "Categories include: appetizer, lunch, dinner, "
-					+ "or dessert \n");
+					+ "or dessert");
 			String foodCategory = s.nextLine();
 			System.out.println("Enter low amount: ");
 			int lowAmt = s.nextInt();
 			System.out.println("Enter order amount: ");
 			int orderAmt = s.nextInt();
-			Database.createFood(foodName, foodCategory, lowAmt, orderAmt);
+			s.nextLine();
+			System.out.println(Database.createFood(foodName, foodCategory, lowAmt, orderAmt));
 		} else if (itemType.equals("Yes") || itemType.equals("yes")) {
 			System.out.println("Enter drink name: ");
 			String drinkName = s.nextLine();
 			System.out.println("Enter drink category: \n"
 					+ "Categories include: Water, SoftDrink, Alcoholic, "
-					+ "or Other \n");
+					+ "or Other");
 			String drinkCategory = s.nextLine();
 			System.out.println("Enter low amount: ");
 			int lowAmt = s.nextInt();
 			System.out.println("Enter order amount: ");
 			int orderAmt = s.nextInt();
-			Database.createDrink(drinkName, drinkCategory, lowAmt, orderAmt);
+			s.nextLine();
+			System.out.println(Database.createDrink(drinkName, drinkCategory, lowAmt, orderAmt));
 		} else {
 			System.out.println("Invalid input. Please enter 'yes' if the "
 					+ "item is a drink or 'no' if the item is food.");
@@ -132,11 +164,11 @@ public class UI {
 	
 	//Implemented, not tested. - Kylie F
 	private static void modifyItem(Scanner s) {
-	String sql = "UPDATE InventoryItem " + "SET foodCategories =  ";
-         stmt.executeUpdate(sql);
-         ResultSet rs = stmt.executeQuery(QUERY);
-         while(rs.next()){
-            System.out.print("Menu: " + rs.getString("foodCategories"));		
+	//String sql = "UPDATE InventoryItem " + "SET foodCategories =  ";
+      //   stmt.executeUpdate(sql);
+        // ResultSet rs = stmt.executeQuery(QUERY);
+         //while(rs.next()){
+          //  System.out.print("Menu: " + rs.getString("foodCategories"));		
 	}
 	
 	private static void reduceItem(Scanner s) {
