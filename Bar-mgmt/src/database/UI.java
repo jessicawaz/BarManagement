@@ -132,6 +132,15 @@ public class UI {
 	
 	//Implemented, not tested. - Kylie F
 	private static void modifyItem(Scanner s) {
+	System.out.println("Enter item category name that needs inventory updated: \n"+ "Categories include: appetizer, lunch, dinner, dessert"+ "or Water, SoftDrink, Alcoholic, Other \n");
+	String name = s.nextLine();	
+	InventoryItem i = Database.getInventoryItemFromName(name);
+		
+	System.out.println("Please enter the number quantity you want associated with this item.");
+	int newAmount = s.nextInt();
+	i.setItemOrderAmt(newAmount);
+
+	Database.saveInventoryItem(i);		   
 			
 	}
 	
