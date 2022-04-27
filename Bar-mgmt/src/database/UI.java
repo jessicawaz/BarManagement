@@ -45,7 +45,7 @@ public class UI {
 						case "modifyItem":
 							modifyItem(s);
 							break;
-						case "reduceItem":
+						case "reduceStock":
 							reduceItem(s);
 							break;
 						case "createOrder":
@@ -54,13 +54,16 @@ public class UI {
 						case "completeOrder":
 							completeOrder(s);
 							break;
+						case "help":
+							printHelp();
+							break;
 						case "logout":
 							break main;
 						case "testdb":
 							testDatabase();
 							break;
 						default:
-							System.out.println("Invalid command: "+ command);
+							System.out.println("Invalid command: "+ command+" use 'help' to a list of commands.");
 							break;
 					}
 					System.out.println("Please enter another command or enter \"logout\" to exit.");
@@ -75,6 +78,18 @@ public class UI {
 			Database.disconnect();
 			System.out.println("Goodbye");
 		}
+	}
+
+	private static void printHelp() {
+		System.out.println("reviewItems - list all items in inventory.");
+		System.out.println("reviewOrders - list all orders for inventory items.");
+		System.out.println("addItem - create a new inventory item.");
+		System.out.println("modifyItem - update and inventory item's name, lowAmount, orderAmount, and/or category.");
+		System.out.println("reduceStock - decrease the amount of inventory in stock.");
+		System.out.println("createOrder - create a new order for inventory items.");
+		System.out.println("completeOrder - mark an outstanding order as complete, automatically adding it to stock.");
+		System.out.println("help - prints this message.");
+		System.out.println("logout - disconnect from the database.");
 	}
 
 	private static void testDatabase() {
@@ -185,20 +200,30 @@ public class UI {
 	System.out.println("You have updated: " + name + "New inventory amount will be: " + newAmount);
 			
 	}
-	//Implemented, I used the same logic as the modify item since it seemed to make the most sense? But correct me if I'm wrong. Or if we want to trim out reduce item all together and just keep modify. - Kylie F
-	private static void reduceItem(Scanner s) {
-	System.out.println("Enter item category name that needs inventory reduced: \n"+ "Categories include: appetizer, lunch, dinner, dessert"+ "or Water, SoftDrink, Alcoholic, Other \n");
-	String name = s.nextLine();	
-	InventoryItem i = Database.getInventoryItemFromName(name);
-		
-	System.out.println("Please enter the new number quantity you want associated with this item.");
-	int newAmount = s.nextInt();
-	i.setItemOrderAmt(newAmount);
-
-	Database.saveInventoryItem(i);	
 	
-	System.out.println("You have updated: " + name + "New inventory amount will be: " + newAmount);
+	
+	private static void reduceItem(Scanner s) {
+		String names = "[";
+		for(InventoryItem item : Database.getInventoryItems()) {
+			names += item.getName() + ", ";
+		}
+		names = names.substring(0, names.length()-2) +"]";//remove the last comma
 		
+		System.out.println("Which item would you like to reduce the stock of? \n"
+				+ "Item names: "+names);
+		String itemName = s.nextLine();
+		InventoryItem item = Database.getInventoryItemFromName(itemName);
+		
+		System.out.println("How much do you want to decrease the stock? Current stock: " + item.getQuantityInStock());
+		int amount = s.nextInt();
+		s.nextLine();
+		if(amount <= 0 || amount >item.getQuantityInStock()) {
+			System.out.println("Amount must be greater than 0 and less than or equal to the amount in stock!");
+			return;
+		}
+		item.useStock(amount);
+		Database.saveInventoryItem(item);
+		System.out.println("Stock reduced. Stock is now: " + item.getQuantityInStock());
 	}
 
 	private static void createOrder(Scanner s) {
@@ -245,7 +270,7 @@ public class UI {
 		
 		InventoryOrder order = incomplete.get(index-1);
 		if (Database.completeOrder(order, newDate)) {
-			System.out.println("The order: \n" + order + " \nhas been added successfully!");
+			System.out.println("The order, \n" + order + " \nhas been completed successfully!");
 		}
 		s.nextLine();
 	}

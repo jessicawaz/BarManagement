@@ -85,7 +85,7 @@ public class InventoryItem {
 		this.dirty = true;
 	}
 	public void useStock(int quantityUsed) {
-		if(quantityUsed < 0) {
+		if(quantityUsed <= 0) {
 			throw new IllegalArgumentException("Quantity used must be positive!");
 		}
 		this.quantityInStock -= quantityUsed;
