@@ -137,10 +137,12 @@ public class InventoryItem {
 	
 
 	public String toString() {
-		return String.format("Name: %s, Type: %s, Category: %s, Stock: %d", 
+		return String.format("Name: %s, Type: %s, Category: %s, Stock: %d, LowStock: %d, OrderAmount: %d", 
 				this.getName(), 
 				this.isDrink()?"Drink":"Food", 
 				this.getCategory(),
-				this.getQuantityInStock());
+				this.getQuantityInStock(),
+				this.getItemLowAmt(),
+				this.getItemOrderAmt());
 	}
 }

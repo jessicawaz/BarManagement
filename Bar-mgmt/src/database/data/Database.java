@@ -17,7 +17,7 @@ public class Database {
 
 	private static Connection connection;
 	private static int USER_ID;
-	private static final boolean DEBUG_SQL = true;
+	private static final boolean DEBUG_SQL = false;
 	private static final HashSet<String> foodCategories = new HashSet<>();
 	private static final HashSet<String> drinkCategories = new HashSet<>();
 	static {
@@ -27,7 +27,7 @@ public class Database {
 		foodCategories.add("dessert");
 		drinkCategories.add("water");
 		drinkCategories.add("softdrink");
-		drinkCategories.add("alcholic");
+		drinkCategories.add("alcoholic");
 		drinkCategories.add("other");
 	}
 	private static PreparedStatement GET_USER = null;

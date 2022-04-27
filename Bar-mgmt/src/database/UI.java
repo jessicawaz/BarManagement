@@ -56,8 +56,8 @@ public class UI {
 						case "logout":
 							break main;
 						case "testdb":
-							testDatabase();
-							break;
+							//testDatabase();
+							//break;
 						default:
 							System.out.println("Invalid command: "+ command+" use 'help' to a list of commands.");
 							break;
@@ -182,61 +182,84 @@ public class UI {
 	}
 	
 	
-private static void modifyItem(Scanner s) {
-System.out.println("Enter item category name that needs update: \n"+ "Categories include: appetizer, lunch, dinner, dessert"+ " or Water, SoftDrink, Alcoholic, Other \n");
-String names = "[";
-		
-for(InventoryItem item : Database.getInventoryItems()) {
-    	names += item.getName() + ", ";
-}
-	names = names.substring(0, names.length()-2) +"]";
-
-	System.out.println("Enter item name: \n" + "Items that can be ordered: " + names);
-	String itemName = s.nextLine();
-			   
-	InventoryItem item = Database.getInventoryItemFromName(itemName);
-
-if (item.isFood()) {
-		
-  	System.out.println("What is the food's new name? (leave blank to keep previous)")
- 	String newName = s.next();
-		
-if(!newName.isBlank()){
-    	item.setName(newName);
-		
-	System.out.println("Enter low amount: ");
-		int lowAmt = s.nextInt();
-		
-	System.out.println("Enter order amount: ");
-		int orderAmt = s.nextInt();
-		s.nextLine();
-		
-	System.out.println(Database.createFood(newName, lowAmt, orderAmt));
-  }
-}
-else{
-  if (item.isDrink()) {
-		
-  	System.out.println("What is the drinks's new name? (leave blank to keep previous)")
- 	String newName = s.next();
-		
-  if(!newName.isBlank()){
-    	item.setName(newName);
-		
-	System.out.println("Enter low amount: ");
-		int lowAmt = s.nextInt();
-		
-	System.out.println("Enter order amount: ");
-		int orderAmt = s.nextInt();
-		s.nextLine();
-		
-	System.out.println(Database.createDrink(newName, lowAmt, orderAmt));
-}
-	Database.saveInventoryItem(i);
-	  
-	System.out.println("Update successful," + newName + "added");	
-	}
+	private static void modifyItem(Scanner s) {
+		String names = "[";
+				
+		for(InventoryItem item : Database.getInventoryItems()) {
+		    	names += item.getName() + ", ";
+		}
+		names = names.substring(0, names.length()-2) +"]";
 	
+		System.out.println("Enter item name: \n" + "Items that can be ordered: " + names);
+		String itemName = s.nextLine();
+				   
+		InventoryItem item = Database.getInventoryItemFromName(itemName);
+	
+		if (item.isFood()) {
+				
+		  	System.out.println("What is the food's new name? (leave blank to keep previous)");
+		 	String newName = s.nextLine();
+				
+			if(!newName.isBlank()){
+		    	item.setName(newName);
+			}
+			
+			System.out.println("Enter low amount: (or -1 to keep previous)");
+			int lowAmt = s.nextInt();
+			if(lowAmt >= 0) {
+				item.setItemLowAmt(lowAmt);
+			}
+				
+			System.out.println("Enter order amount: (or -1 to keep previous)");
+			int orderAmt = s.nextInt();
+			if(orderAmt >= 0) {
+				item.setItemOrderAmt(orderAmt);
+			}
+			s.nextLine();
+			System.out.println("Enter food category: (or leave blank to keep previous)\n"
+					+ "Categories include: appetizer, lunch, dinner, "
+					+ "or dessert");
+			String foodCategory = s.nextLine();
+			if(!foodCategory.isBlank()) {
+				item.setFoodCategory(foodCategory);
+			}
+		}
+		else{
+				
+			System.out.println("What is the drinks's new name? (leave blank to keep previous)");
+			String newName = s.nextLine();
+			
+			if(!newName.isBlank()){
+		    	item.setName(newName);
+			}
+				
+			System.out.println("Enter low amount: (or -1 to keep previous)");
+			int lowAmt = s.nextInt();
+			if(lowAmt >= 0) {
+				item.setItemLowAmt(lowAmt);
+			}
+				
+			System.out.println("Enter order amount: (or -1 to keep previous)");
+			int orderAmt = s.nextInt();
+			if(orderAmt >= 0) {
+				item.setItemOrderAmt(orderAmt);
+			}
+			s.nextLine();
+			System.out.println("Enter drink category: (or leave blank to keep previous)\n"
+					+ "Categories include: Water, SoftDrink, Alcoholic, "
+					+ "or Other");
+			String drinkCategory = s.nextLine();
+			if(!drinkCategory.isBlank()) {
+				item.setDrinkCategory(drinkCategory);
+			}
+			
+		}
+		Database.saveInventoryItem(item);
+		  
+		System.out.println("Update successful,\n" + item);	
+		
+	}
+
 	
 	private static void reduceItem(Scanner s) {
 		String names = "[";
