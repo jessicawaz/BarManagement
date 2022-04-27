@@ -230,14 +230,6 @@ public class Database {
 		return getInventoryItemFromName(name);
 	}
 	
-	public static void reduceStock(InventoryItem item, int amount) {
-		if(amount <= 0) {
-			throw new IllegalArgumentException("Cannot reduce stock by number less than 1!");
-		}
-		item.useStock(amount);
-		saveInventoryItem(item);
-	}
-	
 	private static List<InventoryOrder> getOrdersFromQuery(ResultSet r) throws SQLException{
 		ArrayList<InventoryOrder> orders = new ArrayList<>();
 		while(r.next()) {
