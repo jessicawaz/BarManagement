@@ -164,15 +164,32 @@ public class UI {
 	
 	//Implemented, not tested. - Kylie F
 	private static void modifyItem(Scanner s) {
-	//String sql = "UPDATE InventoryItem " + "SET foodCategories =  ";
-      //   stmt.executeUpdate(sql);
-        // ResultSet rs = stmt.executeQuery(QUERY);
-         //while(rs.next()){
-          //  System.out.print("Menu: " + rs.getString("foodCategories"));		
+	System.out.println("Enter item category name that needs inventory updated: \n"+ "Categories include: appetizer, lunch, dinner, dessert"+ "or Water, SoftDrink, Alcoholic, Other \n");
+	String name = s.nextLine();	
+	InventoryItem i = Database.getInventoryItemFromName(name);
+		
+	System.out.println("Please enter the new number quantity you want associated with this item.");
+	int newAmount = s.nextInt();
+	i.setItemOrderAmt(newAmount);
+
+	Database.saveInventoryItem(i);	
+		
+	System.out.println("You have updated: " + name + "New inventory amount will be: " + newAmount);
+			
 	}
-	
+	//Implemented, I used the same logic as the modify item since it seemed to make the most sense? But correct me if I'm wrong. Or if we want to trim out reduce item all together and just keep modify. - Kylie F
 	private static void reduceItem(Scanner s) {
-		System.out.println("Not implemented");
+	System.out.println("Enter item category name that needs inventory reduced: \n"+ "Categories include: appetizer, lunch, dinner, dessert"+ "or Water, SoftDrink, Alcoholic, Other \n");
+	String name = s.nextLine();	
+	InventoryItem i = Database.getInventoryItemFromName(name);
+		
+	System.out.println("Please enter the new number quantity you want associated with this item.");
+	int newAmount = s.nextInt();
+	i.setItemOrderAmt(newAmount);
+
+	Database.saveInventoryItem(i);	
+	
+	System.out.println("You have updated: " + name + "New inventory amount will be: " + newAmount);
 		
 	}
 
