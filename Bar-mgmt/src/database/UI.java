@@ -202,8 +202,15 @@ public class UI {
 	}
 
 	private static void createOrder(Scanner s) {
+		String names = "[";
+		for(InventoryItem item : Database.getInventoryItems()) {
+			names += item.getName() + ", ";
+		}
+		names = names.substring(0, names.length()-2) +"]";//remove the last comma
+		
 		System.out.println("Enter item name: \n"
-				+ "Items that can be ordered: " + Database.getInventoryItems());
+				+ "Items that can be ordered: "+names);
+
 		String itemName = s.nextLine();
 		InventoryItem item = Database.getInventoryItemFromName(itemName);
 		
@@ -216,12 +223,15 @@ public class UI {
 		
 		Date date = new Date();
 		Database.createOrder(item, price, orderAmnt, date);
-		System.out.println(item + " ordered successfully.");
+		System.out.println(item.getName() + " ordered successfully.");
+		s.nextLine();
 	}
 	private static void completeOrder(Scanner s) throws ParseException {
 		List<InventoryOrder> incomplete = Database.getIncompleteOrders();
-		System.out.println("Current incomplete orders: \n" 
-				+ incomplete);
+		System.out.println("Current incomplete orders:");
+		for(int i = 0; i< incomplete.size(); i++) {
+			System.out.printf("%d. %s\n", i+1, incomplete.get(i));
+		}
 		System.out.println("Which order has been received?\n"
 				+ "Enter the index of the order (1, 2, etc): ");
 		int index = s.nextInt();
@@ -231,12 +241,12 @@ public class UI {
 		System.out.println("Order received date: \n"
 				+ "Format: month-day-year");
 		String recDate = s.next();
-			Date newDate = DATE_FORMAT.parse(recDate);
-			
-			InventoryOrder order = incomplete.get(index-1);
-			if (Database.completeOrder(order, newDate)) {
-				System.out.println(order + " \nhas been added successfully!");
-			
+		Date newDate = DATE_FORMAT.parse(recDate);
+		
+		InventoryOrder order = incomplete.get(index-1);
+		if (Database.completeOrder(order, newDate)) {
+			System.out.println("The order: \n" + order + " \nhas been added successfully!");
 		}
+		s.nextLine();
 	}
 }
