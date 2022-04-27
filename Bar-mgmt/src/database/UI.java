@@ -230,8 +230,8 @@ public class UI {
 		}
 		System.out.println("Order received date: \n"
 				+ "Format: month-day-year");
-		String recDate = s.nextLine();
-			Date newDate = new SimpleDateFormat("mm-dd-yyyy").parse(recDate);
+		String recDate = s.next();
+			Date newDate = DATE_FORMAT.parse(recDate);
 			
 			InventoryOrder order = incomplete.get(index-1);
 			if (Database.completeOrder(order, newDate)) {
