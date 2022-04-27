@@ -140,7 +140,9 @@ public class UI {
 	int newAmount = s.nextInt();
 	i.setItemOrderAmt(newAmount);
 
-	Database.saveInventoryItem(i);		   
+	Database.saveInventoryItem(i);	
+		
+	System.out.println("You have updated: " + name + "New inventory amount will be: " + newAmount);
 			
 	}
 	//Implemented, I used the same logic as the modify item since it seemed to make the most sense? But correct me if I'm wrong. Or if we want to trim out reduce item all together and just keep modify. - Kylie F
@@ -154,6 +156,8 @@ public class UI {
 	i.setItemOrderAmt(newAmount);
 
 	Database.saveInventoryItem(i);	
+	
+	System.out.println("You have updated: " + name + "New inventory amount will be: " + newAmount);
 		
 	}
 
