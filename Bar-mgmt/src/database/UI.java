@@ -59,7 +59,7 @@ public class UI {
 							//testDatabase();
 							//break;
 						default:
-							System.out.println("Invalid command: "+ command+" use 'help' to a list of commands.");
+							System.out.println("Invalid command: '"+command+"' (use 'help' to get a list of commands)");
 							break;
 					}
 					System.out.println("Please enter another command or enter \"logout\" to exit.");
@@ -302,7 +302,7 @@ public class UI {
 		System.out.println("Enter order price per unit: ");
 		double price = s.nextDouble();
 		
-		System.out.println("Enter amount to order: ");
+		System.out.println("Enter amount to order: (default amount for item: "+item.getItemOrderAmt()+")");
 		int orderAmnt = s.nextInt();
 		
 		Date date = new Date();

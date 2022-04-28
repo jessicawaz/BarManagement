@@ -78,6 +78,9 @@ public class InventoryItem {
 	public boolean isFood() {
 		return !isDrink;
 	}
+	private boolean hasLowStock() {
+		return this.getQuantityInStock() < this.getItemLowAmt();
+	}
 	
 	
 	public void setName(String name) {
@@ -137,12 +140,14 @@ public class InventoryItem {
 	
 
 	public String toString() {
-		return String.format("Name: %s, Type: %s, Category: %s, Stock: %d, LowStock: %d, OrderAmount: %d", 
+		return String.format("Name: %s, Type: %s, Category: %s, Stock: %d, LowStock: %d, OrderAmount: %d, %s", 
 				this.getName(), 
 				this.isDrink()?"Drink":"Food", 
 				this.getCategory(),
 				this.getQuantityInStock(),
 				this.getItemLowAmt(),
-				this.getItemOrderAmt());
+				this.getItemOrderAmt(),
+				this.hasLowStock()? "##LOW STOCK##": "");
 	}
+
 }
